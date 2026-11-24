@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #006aff;
+    --ink: #000000;
+    --ink-slate: #405168;
+    --ink-steel: #667b99;
+    --ink-mute: #8798b0;
+    --page: #f9fafb;
+    --canvas: #ffffff;
+    --hairline: #dce2ea;
+  }
+
+  body {
+    background-color: var(--page);
+    color: var(--ink);
+    font-family: InterVariable, Inter, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Smooth scroll behavior with Lenis */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+}
+
+/* Custom Bluesky Design System & Quarry UI patterns */
+.pill-primary {
+  background-color: #006aff;
+  color: #ffffff;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14.5px;
+  height: 36px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  border: none;
+}
+.pill-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.pill-secondary {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14.5px;
+  height: 36px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dce2ea;
+  transition: all 0.15s ease;
+}
+.pill-secondary:hover {
+  background-color: #f9fafb;
+  border-color: #c0dcf0;
+}
+
+.pill-ghost {
+  background-color: transparent;
+  color: #405168;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 14px;
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.pill-ghost:hover {
+  color: #000000;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Modal and card surfaces from DESIGN.md */
+.card-modal {
+  background-color: #ffffff;
+  border-radius: 21px;
+  border: 1px solid #dce2ea;
+}
+
+.card-feed {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dce2ea;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.card-feed:hover {
+  border-color: #c0dcf0;
+}
+
+/* Subtle custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+::-webkit-scrollbar-thumb {
+  background: #dce2ea;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8798b0;
+}
