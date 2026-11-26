@@ -75,7 +75,6 @@ export function MorphingNavbar({
     { label: t("nav.updates"), href: "/updates" },
     { label: t("nav.gallery"), href: "/gallery" },
     { label: isTamil ? "நிதி திரட்டல்" : "Crowdfunding", href: "/crowdfunding" },
-    { label: t("nav.contact"), href: "/contact" },
   ];
 
   const activeCta = cta ?? (isTamil ? "நன்கொடை" : "Donate");

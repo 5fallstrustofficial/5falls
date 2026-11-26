@@ -160,20 +160,26 @@ export function ServiceShowcase({
           ))}
         </div>
 
-        <div className="space-y-10 md:hidden">
+        <div className="space-y-12 md:hidden">
           {rows.map((r, i) => (
-            <div key={r.title}>
+            <div key={r.title} className="space-y-4">
               <div className="aspect-[10/6.4] overflow-hidden rounded-2xl"><Visual row={r} seed={i + 1} /></div>
-              <h3 className="mt-4 text-2xl font-medium tracking-tight">{r.title}</h3>
-              <p className="mt-1.5 text-background/65">{r.text}</p>
-              <ul className="mt-3 space-y-1.5 text-sm text-background/70">
+              <div>
+                <span className="text-xs font-semibold tabular-nums text-primary">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="mt-1 text-2xl font-medium tracking-tight">{r.title}</h3>
+                <p className="mt-1.5 text-sm text-background/65">{r.text}</p>
+              </div>
+              <ul className="space-y-1.5 text-sm text-background/75">
                 {r.items.map((it) => (
-                  <li key={it} className="flex items-center gap-2.5">
-                    <span className="size-1.5 rounded-full bg-primary" />
-                    {it}
+                  <li key={it} className="flex items-start gap-2.5">
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{it}</span>
                   </li>
                 ))}
               </ul>
+              <a href={r.href ?? "#"} className="inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4">
+                Explore <ArrowUpRight className="size-3.5 text-primary" />
+              </a>
             </div>
           ))}
         </div>

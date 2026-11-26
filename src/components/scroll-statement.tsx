@@ -63,11 +63,11 @@ export function ScrollStatement({
 
   return (
     <div ref={wrap} style={{ height: `calc(${stage} * ${track})` }} className={cn("relative w-full", className)}>
-      <div style={{ height: stage }} className="sticky top-0 grid place-items-center overflow-hidden px-6">
+      <div style={{ height: stage }} className="sticky top-0 grid place-items-center overflow-hidden px-5 sm:px-6">
         <div className="w-full max-w-4xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">{eyebrow}</p>
-          <div className="relative mt-6 pb-8 pt-4">
-            <p className="font-[family-name:var(--font-anton)] text-[clamp(1.9rem,5vw,3.9rem)] font-bold leading-[1.12] tracking-tight">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:tracking-[0.25em]">{eyebrow}</p>
+          <div className="relative mt-4 pb-6 pt-2 sm:mt-6 sm:pb-8 sm:pt-4">
+            <p className="font-[family-name:var(--font-anton)] text-[clamp(1.45rem,4.6vw,3.9rem)] font-bold leading-[1.15] tracking-tight sm:leading-[1.12]">
               {words.map((w, i) => (
                 <span key={i} style={{ color: wordColor(clamp(fill - i)) }}>{w} </span>
               ))}

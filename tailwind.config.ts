@@ -13,10 +13,10 @@ const config: Config = {
         input: "#dce2ea",
         ring: "#006aff",
         background: "#f9fafb",
-        foreground: "#000000",
+        foreground: "#0f172a",
         card: {
           DEFAULT: "#ffffff",
-          foreground: "#000000",
+          foreground: "#0f172a",
         },
         muted: {
           DEFAULT: "#f1f4f8",
@@ -24,7 +24,7 @@ const config: Config = {
         },
         accent: {
           DEFAULT: "#f1f5f9",
-          foreground: "#000000",
+          foreground: "#0f172a",
         },
         primary: {
           DEFAULT: "#006aff", // Bluesky Blue

@@ -207,8 +207,9 @@ function OrbitCard({
   progress: MotionValue<number>;
   stageSize: { width: number; height: number };
 }) {
-  const rxWide = Math.min(stageSize.width * 0.34, 400);
-  const ryWide = Math.min(stageSize.height * 0.33, 215);
+  const isMobile = stageSize.width < 640;
+  const rxWide = Math.min(stageSize.width * (isMobile ? 0.3 : 0.34), 400);
+  const ryWide = Math.min(stageSize.height * (isMobile ? 0.3 : 0.33), 215);
   const stackCenterY = Math.min(stageSize.height * 0.21, 118);
 
   // Orbit angle spins clockwise around the heading as user scrolls
@@ -254,7 +255,7 @@ function OrbitCard({
         zIndex: index < total - 1 ? 10 + index : 20,
       }}
       className={cn(
-        "absolute left-1/2 top-1/2 -ml-[clamp(3.25rem,6.5vw,4.75rem)] -mt-[clamp(3.25rem,6.5vw,4.75rem)] size-[clamp(6.5rem,13vw,9.5rem)] overflow-hidden rounded-2xl shadow-[0_20px_45px_-15px_rgb(0_0_0/0.16)] ring-1 ring-black/5",
+        "absolute left-1/2 top-1/2 -ml-[clamp(3.625rem,11vw,4.75rem)] -mt-[clamp(3.625rem,11vw,4.75rem)] size-[clamp(7.25rem,22vw,9.5rem)] overflow-hidden rounded-2xl shadow-[0_20px_45px_-15px_rgb(0_0_0/0.16)] ring-1 ring-black/5",
         card.className
       )}
     >

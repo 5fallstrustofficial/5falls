@@ -99,7 +99,7 @@ export function MosaicHero({
       {(eyebrow || title || lead || primary || secondary || children) && (
         <div className="grid max-w-[min(72rem,94vw)] justify-items-center gap-[clamp(1rem,2.4vw,1.9rem)] px-[clamp(1rem,3.2vw,3rem)] pb-[clamp(3rem,7vw,8rem)] pt-[clamp(5rem,8vw,8rem)] text-center">
           {eyebrow && (
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">{eyebrow}</p>
+            <p className="rounded-full border border-background/25 bg-background/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-background backdrop-blur-md">{eyebrow}</p>
           )}
           {title && (
             <h1 className="text-balance text-[clamp(2.2rem,0.8rem+4.6vw,6.2rem)] font-semibold leading-[0.98] tracking-[-0.05em] text-background">

@@ -26,10 +26,10 @@ export default function PartnersSection() {
         angle: slot.angle,
         stackRotate: slot.stackRotate,
         stackOffset: slot.stackOffset,
-        className: `${slot.bg} p-2.5 border border-border`,
+        className: `${slot.bg} p-2 sm:p-2.5 border border-border`,
         content: (
-          <div className="flex size-full flex-col items-center justify-between gap-1.5 text-center">
-            <div className="flex h-14 w-full items-center justify-center rounded-xl border border-border/60 bg-background px-2 py-1.5 shadow-xs sm:h-16">
+          <div className="flex size-full flex-col items-center justify-between gap-1 text-center sm:gap-1.5">
+            <div className="flex h-11 w-full items-center justify-center rounded-lg border border-border/60 bg-background px-1.5 py-1 shadow-xs sm:h-16 sm:rounded-xl sm:px-2 sm:py-1.5">
               {partner.logo ? (
                 <Image
                   src={partner.logo}
@@ -39,20 +39,20 @@ export default function PartnersSection() {
                   className="max-h-full max-w-full object-contain"
                 />
               ) : (
-                <span className="font-mono text-xs font-extrabold tracking-tight text-primary sm:text-sm">
+                <span className="font-mono text-[10px] font-extrabold tracking-tight text-primary sm:text-sm">
                   {partner.badge || "WRD"}
                 </span>
               )}
             </div>
             <div className="space-y-0.5">
-              <div className="line-clamp-2 text-[10px] font-bold leading-tight sm:text-[11px]">
+              <div className="line-clamp-2 text-[9px] font-bold leading-tight sm:text-[11px]">
                 {partner.name}
               </div>
               <div
                 className={
                   isDark
-                    ? "line-clamp-1 text-[8px] font-medium opacity-80"
-                    : "line-clamp-1 text-[8px] font-semibold text-primary"
+                    ? "line-clamp-1 text-[7px] font-medium opacity-80 sm:text-[8px]"
+                    : "line-clamp-1 text-[7px] font-semibold text-primary sm:text-[8px]"
                 }
               >
                 {partner.role}
@@ -67,10 +67,10 @@ export default function PartnersSection() {
       angle: ORBIT_SLOTS[4].angle,
       stackRotate: ORBIT_SLOTS[4].stackRotate,
       stackOffset: ORBIT_SLOTS[4].stackOffset,
-      className: "bg-card p-2.5 border border-border",
+      className: "bg-card p-2 sm:p-2.5 border border-border",
       content: (
-        <div className="flex size-full flex-col items-center justify-between gap-1.5 text-center">
-          <div className="flex h-14 w-full items-center justify-center rounded-xl border border-border/60 bg-background px-2 py-1.5 shadow-xs sm:h-16">
+        <div className="flex size-full flex-col items-center justify-between gap-1 text-center sm:gap-1.5">
+          <div className="flex h-11 w-full items-center justify-center rounded-lg border border-border/60 bg-background px-1.5 py-1 shadow-xs sm:h-16 sm:rounded-xl sm:px-2 sm:py-1.5">
             <Image
               src="/img/logo-navy.png"
               alt="Five Falls Trust"
@@ -80,10 +80,10 @@ export default function PartnersSection() {
             />
           </div>
           <div className="space-y-0.5">
-            <div className="line-clamp-2 text-[10px] font-bold leading-tight sm:text-[11px]">
+            <div className="line-clamp-2 text-[9px] font-bold leading-tight sm:text-[11px]">
               {isTamil ? "சமூக தன்னார்வலர்கள்" : "Local Community & Donors"}
             </div>
-            <div className="line-clamp-1 text-[8px] font-semibold text-primary">
+            <div className="line-clamp-1 text-[7px] font-semibold text-primary sm:text-[8px]">
               {isTamil ? "மக்கள் பங்களிப்பு" : "Civic Collective"}
             </div>
           </div>

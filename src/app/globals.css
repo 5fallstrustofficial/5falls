@@ -6,8 +6,16 @@
   :root {
     --background: #f9fafb;
     --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --muted: #f1f4f8;
+    --muted-foreground: #405168;
     --accent: #cbd5e1;
+    --accent-foreground: #0f172a;
+    --border: #dce2ea;
     --primary: #006aff;
+    --primary-foreground: #ffffff;
+    --ring: #006aff;
     --ink: #000000;
     --ink-slate: #405168;
     --ink-steel: #667b99;

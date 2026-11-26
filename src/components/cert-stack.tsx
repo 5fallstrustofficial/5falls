@@ -71,11 +71,11 @@ export function CertStack({ certs = CERTS, interval = 4800, label = "Licenses an
   const front = order[0];
 
   return (
-    <section className={cn("mx-auto grid w-full max-w-5xl items-center gap-10 px-6 py-12 md:grid-cols-[1fr_1.15fr]", className)} onMouseEnter={() => (paused.current = true)} onMouseLeave={() => (paused.current = false)}>
+    <section className={cn("mx-auto grid w-full max-w-5xl items-center gap-12 px-4 py-10 sm:px-6 sm:py-12 md:grid-cols-[1fr_1.15fr]", className)} onMouseEnter={() => (paused.current = true)} onMouseLeave={() => (paused.current = false)}>
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">{label}</p>
-        <p className="mt-3 font-[family-name:var(--font-anton)] text-[clamp(5rem,14vw,10rem)] leading-none text-primary" aria-label={`${n} certifications`}>{pad(n)}</p>
-        <p className="mt-3 max-w-xs text-muted-foreground">{note}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:tracking-[0.25em]">{label}</p>
+        <p className="mt-3 font-[family-name:var(--font-anton)] text-[clamp(4rem,14vw,10rem)] leading-none text-primary" aria-label={`${n} certifications`}>{pad(n)}</p>
+        <p className="mt-3 max-w-xs text-sm text-muted-foreground sm:text-base">{note}</p>
         <div className="mt-6 flex items-center gap-3">
           <button type="button" onClick={prev} aria-label="Previous certificate" className="grid size-11 place-items-center rounded-full border-2 border-foreground transition-colors hover:bg-foreground hover:text-background"><ArrowUpRight className="size-5 -rotate-[135deg]" strokeWidth={2.6} /></button>
           <button type="button" onClick={next} aria-label="Next certificate" className="grid size-11 place-items-center rounded-full border-2 border-foreground transition-colors hover:bg-foreground hover:text-background"><ArrowUpRight className="size-5 rotate-45" strokeWidth={2.6} /></button>
@@ -83,7 +83,7 @@ export function CertStack({ certs = CERTS, interval = 4800, label = "Licenses an
         </div>
       </div>
 
-      <div className="relative mx-auto aspect-[4/3] w-full max-w-md" aria-live="polite">
+      <div className="relative mx-auto mt-6 min-h-[20rem] w-full max-w-[calc(100%-2rem)] sm:mt-0 sm:min-h-0 sm:aspect-[4/3] sm:max-w-md" aria-live="polite">
         {certs.map((c, i) => {
           const p = pos(i);
           const isFlying = flying === i;
@@ -96,19 +96,19 @@ export function CertStack({ certs = CERTS, interval = 4800, label = "Licenses an
               animate={
                 isFlying
                   ? { x: "125%", y: -30, rotate: 18, opacity: 0, scale: 1, zIndex: n + 1 }
-                  : { x: p * 16, y: p * -16, rotate: ROT[p % ROT.length], scale: 1 - p * 0.045, opacity: p < 4 ? 1 : 0, zIndex: isEntering ? n + 1 : n - p }
+                  : { x: p * 10, y: p * -12, rotate: ROT[p % ROT.length], scale: 1 - p * 0.045, opacity: p < 4 ? 1 : 0, zIndex: isEntering ? n + 1 : n - p }
               }
               transition={isFlying ? { duration: 0.46, ease: [0.55, 0, 1, 0.45] } : isEntering ? { duration: 0.6, ease: [0.34, 1.4, 0.64, 1] } : { duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className={cn("absolute inset-0 flex cursor-pointer flex-col justify-between rounded-[1.75rem] border-2 border-foreground p-6 shadow-[6px_6px_0_0_var(--foreground)]", TONE[i % TONE.length])}
+              className={cn("absolute inset-0 flex cursor-pointer flex-col justify-between overflow-hidden rounded-[1.5rem] border-2 border-foreground p-5 shadow-[5px_5px_0_0_var(--foreground)] sm:rounded-[1.75rem] sm:p-6 sm:shadow-[6px_6px_0_0_var(--foreground)]", TONE[i % TONE.length])}
             >
               <div className="flex items-start justify-between">
-                <span className="grid size-14 place-items-center rounded-2xl border-2 border-current bg-background/90 text-foreground">{c.logo ?? <Award className="size-7" />}</span>
-                <span className="font-[family-name:var(--font-anton)] text-2xl opacity-60">{pad(i + 1)}</span>
+                <span className="grid size-11 place-items-center rounded-xl border-2 border-current bg-background/90 text-foreground sm:size-14 sm:rounded-2xl">{c.logo ?? <Award className="size-6 sm:size-7" />}</span>
+                <span className="font-[family-name:var(--font-anton)] text-xl opacity-60 sm:text-2xl">{pad(i + 1)}</span>
               </div>
-              <div>
-                <h4 className="font-[family-name:var(--font-anton)] text-[clamp(1.5rem,3.4vw,2.2rem)] leading-tight">{c.title}</h4>
-                <p className="mt-1.5 text-sm font-medium opacity-80">{c.org}</p>
-                <span className="mt-4 inline-block rounded-full border-2 border-current px-3 py-1 text-xs font-semibold">{c.when}</span>
+              <div className="min-w-0">
+                <h4 className="font-[family-name:var(--font-anton)] text-[clamp(1.25rem,4.5vw,2.1rem)] leading-tight">{c.title}</h4>
+                <p className="mt-1.5 line-clamp-3 text-xs font-medium opacity-80 sm:text-sm">{c.org}</p>
+                {c.when && <span className="mt-3 inline-block rounded-full border-2 border-current px-3 py-1 text-[11px] font-semibold sm:mt-4 sm:text-xs">{c.when}</span>}
               </div>
             </motion.article>
           );
