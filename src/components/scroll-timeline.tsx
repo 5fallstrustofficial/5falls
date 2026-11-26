@@ -5,7 +5,11 @@ import Image from "next/image";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Calendar, Droplets, Shovel, Trees, Sparkles, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { UPDATES_TIMELINE, UpdatePost } from "@/data/siteData";
+import {
+  UPDATES_TIMELINE,
+  getUpdateCategoryLabel,
+  UpdatePost,
+} from "@/data/siteData";
 
 export function ScrollTimeline({
   items = UPDATES_TIMELINE,
@@ -65,7 +69,7 @@ export function ScrollTimeline({
                     {post.displayDate}
                   </span>
                   <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                    {post.category}
+                    {getUpdateCategoryLabel(post.category)}
                   </span>
                 </div>
 

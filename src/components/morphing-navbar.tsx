@@ -6,8 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Heart, Languages } from "lucide-react";
+import { Heart, Languages, UserCircle2 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { createClient } from "@/lib/supabase/client";
 
 export type NavLink = { label: string; href: string };
 
@@ -18,6 +19,7 @@ export const DEFAULT_LINKS: NavLink[] = [
   { label: "Our Work", href: "/our-work" },
   { label: "Updates", href: "/updates" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Crowdfunding", href: "/crowdfunding" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -50,8 +52,20 @@ export function MorphingNavbar({
 }) {
   const [stuck, setStuck] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const pathname = usePathname();
   const { isTamil, toggleLanguage, t } = useLanguage();
+
+  useEffect(() => {
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => {
+        setIsSignedIn(Boolean(data?.user));
+      });
+    } catch {
+      // ignore if env not present during static checks
+    }
+  }, [pathname]);
 
   const activeLinks = links ?? [
     { label: t("nav.home"), href: "/" },
@@ -60,6 +74,7 @@ export function MorphingNavbar({
     { label: t("nav.ourWork"), href: "/our-work" },
     { label: t("nav.updates"), href: "/updates" },
     { label: t("nav.gallery"), href: "/gallery" },
+    { label: isTamil ? "நிதி திரட்டல்" : "Crowdfunding", href: "/crowdfunding" },
     { label: t("nav.contact"), href: "/contact" },
   ];
 
@@ -87,7 +102,7 @@ export function MorphingNavbar({
       initial={false}
       animate={{
         top: stuck ? 0 : 16,
-        width: stuck ? "100%" : "min(94%, 64rem)",
+        width: stuck ? "100%" : "min(95%, 72rem)",
         borderRadius: stuck ? 0 : 999,
       }}
       transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
@@ -98,10 +113,10 @@ export function MorphingNavbar({
         className
       )}
     >
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-5">
         {/* Brand: Full logo without circular border, redundant text, or Tambaram badge */}
-        <Link href="/" className="flex items-center py-1 group" aria-label="5Falls Home">
-          <div className="relative h-8 sm:h-9 w-28 sm:w-36">
+        <Link href="/" className="flex items-center py-1 group shrink-0" aria-label="5Falls Home">
+          <div className="relative h-8 sm:h-9 w-28 sm:w-32">
             <Image
               src="/img/logo-navy.png"
               alt="Five Falls Women's Welfare Trust"
@@ -113,7 +128,7 @@ export function MorphingNavbar({
         </Link>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 lg:gap-1 md:flex" aria-label="Main">
           {activeLinks.map((l) => {
             const isActive =
               l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
@@ -122,7 +137,7 @@ export function MorphingNavbar({
                 key={l.href}
                 href={l.href}
                 className={cn(
-                  "rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
+                  "rounded-full px-2.5 lg:px-3.5 py-1.5 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap",
                   isActive
                     ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -134,13 +149,13 @@ export function MorphingNavbar({
           })}
         </nav>
 
-        {/* CTA Button, Language Toggle & Mobile Morphing Toggle */}
-        <div className="flex items-center gap-2">
+        {/* CTA Button, Portal Link, Language Toggle & Mobile Morphing Toggle */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Language Toggle Button */}
           <button
             type="button"
             onClick={toggleLanguage}
-            className="h-9 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/90 px-3 sm:px-3.5 text-xs font-semibold text-foreground hover:bg-accent hover:border-primary/40 transition-all shadow-2xs cursor-pointer select-none"
+            className="h-9 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/90 px-2.5 sm:px-3 text-xs font-semibold text-foreground hover:bg-accent hover:border-primary/40 transition-all shadow-2xs cursor-pointer select-none"
             aria-label={isTamil ? "Switch to English" : "தமிழுக்கு மாற்றுக"}
             title={isTamil ? "Switch to English" : "தமிழுக்கு மாற்றுக"}
           >
@@ -150,10 +165,27 @@ export function MorphingNavbar({
             </span>
           </button>
 
+          {/* Portal / Sign In Link */}
+          <Link
+            href={isSignedIn ? "/dashboard" : "/login"}
+            className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card/90 px-3 text-xs font-semibold text-foreground hover:bg-accent hover:border-primary/40 transition-all shadow-2xs whitespace-nowrap"
+          >
+            <UserCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span>
+              {isSignedIn
+                ? isTamil
+                  ? "போர்டல்"
+                  : "Dashboard"
+                : isTamil
+                ? "உள்நுழைக"
+                : "Sign In"}
+            </span>
+          </Link>
+
           <Link
             href={ctaHref}
             onClick={handleCtaClick}
-            className="hidden h-9 items-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 sm:inline-flex gap-1.5"
+            className="hidden h-9 items-center rounded-full bg-primary px-3.5 sm:px-4 text-xs sm:text-sm font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 sm:inline-flex gap-1.5 whitespace-nowrap"
           >
             <Heart className="w-3.5 h-3.5 fill-current" />
             <span>{activeCta}</span>
@@ -238,11 +270,27 @@ export function MorphingNavbar({
                     toggleLanguage();
                     setOpen(false);
                   }}
-                  className="flex h-10 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-4 text-xs font-semibold text-foreground hover:bg-accent shrink-0"
+                  className="flex h-10 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3.5 text-xs font-semibold text-foreground hover:bg-accent shrink-0"
                 >
                   <Languages className="w-4 h-4 text-primary" />
                   <span>{isTamil ? "English" : "தமிழ்"}</span>
                 </button>
+                <Link
+                  href={isSignedIn ? "/dashboard" : "/login"}
+                  onClick={() => setOpen(false)}
+                  className="flex h-10 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-3.5 text-xs font-semibold text-foreground hover:bg-accent shrink-0"
+                >
+                  <UserCircle2 className="w-4 h-4 text-primary" />
+                  <span>
+                    {isSignedIn
+                      ? isTamil
+                        ? "போர்டல்"
+                        : "Dashboard"
+                      : isTamil
+                      ? "உள்நுழைக"
+                      : "Sign In"}
+                  </span>
+                </Link>
                 <Link
                   href={ctaHref}
                   onClick={(e) => {

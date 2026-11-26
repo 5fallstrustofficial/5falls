@@ -1,10 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
 export default function SmoothScroll() {
+  const pathname = usePathname();
+  const isDashboard = pathname?.startsWith("/dashboard") ?? false;
+
   useEffect(() => {
+    if (isDashboard) return;
+
     // Initialize smooth scrolling with reduced, calmer scroll speed
     const lenis = new Lenis({
       duration: 1.4, // Smoother glide duration
@@ -14,6 +20,11 @@ export default function SmoothScroll() {
       smoothWheel: true,
       wheelMultiplier: 0.85, // Calibrated down by 15% to reduce scroll speed
       touchMultiplier: 1.5,
+      prevent: (node) =>
+        Boolean(
+          node instanceof Element &&
+            node.closest("[data-lenis-prevent], [role='dialog'], .fixed.inset-0")
+        ),
     });
 
     function raf(time: number) {
@@ -27,7 +38,7 @@ export default function SmoothScroll() {
       cancelAnimationFrame(animId);
       lenis.destroy();
     };
-  }, []);
+  }, [isDashboard]);
 
   return null;
 }

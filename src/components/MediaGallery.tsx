@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { Play, Eye, Filter, Sparkles } from "lucide-react";
+import { Play, Eye } from "lucide-react";
+import { DEFAULT_GALLERY_ITEMS, type GalleryItem } from "@/data/galleryData";
 
 interface MediaGalleryProps {
   onOpenVideo: (src: string, title: string) => void;
@@ -10,153 +11,42 @@ interface MediaGalleryProps {
   showHeader?: boolean;
 }
 
-const GALLERY_ITEMS = [
-  // Videos
-  {
-    type: "video",
-    src: "/video/u-2026-10-24-tree-planting-reel.mp4",
-    poster: "/img/u-2026-10-24-reel.webp",
-    title: "15 Dry Years to Water Again",
-    category: "videos",
-  },
-  {
-    type: "video",
-    src: "/video/u-2026-11-05-lake-event-reel.mp4",
-    poster: "/img/u-2026-11-05-reel.webp",
-    title: "Lake Protection Walk & Tree Planting Reel",
-    category: "videos",
-  },
-  {
-    type: "video",
-    src: "/video/u-2026-11-08-diwali.mp4",
-    poster: "/img/u-2026-11-08-diwali.webp",
-    title: "Diwali Message from Puduthangal Lake",
-    category: "videos",
-  },
-  // Key Lake Images
-  {
-    type: "image",
-    src: "/img/hero-excavator.webp",
-    title: "Excavator reshaping the bank (13 Oct 2026)",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/lake-with-water.webp",
-    title: "Puduthangal Lake holding water with egrets",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/across-the-lake.webp",
-    title: "Looking across the reshaped lake basin",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/cleared-bank.webp",
-    title: "Cleared and graded lake bund perimeter",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/slope.webp",
-    title: "Graded slope constructed to retain runoff",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/levelled-pylon.webp",
-    title: "Ground levelled by high-tension power pylon",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/standing-water.webp",
-    title: "Fresh catchment basin collecting early rainwater",
-    category: "lake",
-  },
-  {
-    type: "image",
-    src: "/img/pond-cleaned.webp",
-    title: "Thulukankulam pond cleaned and revitalized",
-    category: "lake",
-  },
-  // Events & Dignitaries
-  {
-    type: "image",
-    src: "/img/u-2026-11-05-b-05.webp",
-    title: "Minister Sarathkumar with S. Shanthi and team",
-    category: "events",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-10-21-minister-1.webp",
-    title: "Minister & Corporation officials inspecting inlet",
-    category: "events",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-10-23-1.webp",
-    title: "Mega tree planting drive at lake bund",
-    category: "events",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-11-05-b-10.webp",
-    title: "College student volunteers and community rally",
-    category: "events",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-11-06-news.webp",
-    title: "Chenthamil Naadu weekly front-page coverage",
-    category: "events",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-11-05-invitation.webp",
-    title: "Official restoration event invitation letter",
-    category: "events",
-  },
-  // Work in Progress
-  {
-    type: "image",
-    src: "/img/u-2026-10-15-1.webp",
-    title: "Excavator working beneath dark monsoon clouds",
-    category: "work",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-10-15-2.webp",
-    title: "Uprooting invasive thorny vegetation by root",
-    category: "work",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-10-15-3.webp",
-    title: "Piles of cleared thorny brush along bund",
-    category: "work",
-  },
-  {
-    type: "image",
-    src: "/img/u-2026-10-21-4.webp",
-    title: "Water flowing into lake via stone inlet channel",
-    category: "work",
-  },
-];
-
 export default function MediaGallery({
   onOpenVideo,
   onOpenLightbox,
   showHeader = true,
 }: MediaGalleryProps) {
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [items, setItems] = useState<GalleryItem[]>(DEFAULT_GALLERY_ITEMS);
+
+  useEffect(() => {
+    fetch("/api/gallery")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { items?: GalleryItem[] } | null) => {
+        if (data?.items && data.items.length > 0) {
+          setItems(data.items);
+        }
+      })
+      .catch(() => {
+        // Keep static fallback cleanly
+      });
+  }, []);
+
+  const counts = useMemo(
+    () => ({
+      all: items.length,
+      videos: items.filter((i) => i.category === "videos").length,
+      lake: items.filter((i) => i.category === "lake").length,
+      events: items.filter((i) => i.category === "events").length,
+      work: items.filter((i) => i.category === "work").length,
+    }),
+    [items]
+  );
 
   const filteredItems =
     activeCategory === "all"
-      ? GALLERY_ITEMS
-      : GALLERY_ITEMS.filter((item) => item.category === activeCategory);
+      ? items
+      : items.filter((item) => item.category === activeCategory);
 
   return (
     <section id="gallery" className={`${showHeader ? "py-20" : "pt-8 pb-16"} px-4 sm:px-6 bg-[#f9fafb] border-t border-[#dce2ea]`}>
@@ -175,11 +65,11 @@ export default function MediaGallery({
         {/* Filter Pills */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
           {[
-            { id: "all", label: "All Media (21 Featured)" },
-            { id: "videos", label: "Reels & Videos (3)" },
-            { id: "lake", label: "Lake & Water (8)" },
-            { id: "events", label: "Events & Ministers (6)" },
-            { id: "work", label: "Field Operations (4)" },
+            { id: "all", label: `All Media (${counts.all})` },
+            { id: "videos", label: `Reels & Videos (${counts.videos})` },
+            { id: "lake", label: `Lake & Water (${counts.lake})` },
+            { id: "events", label: `Events & Ministers (${counts.events})` },
+            { id: "work", label: `Field Operations (${counts.work})` },
           ].map((cat) => (
             <button
               key={cat.id}
@@ -199,7 +89,7 @@ export default function MediaGallery({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredItems.map((item, idx) => (
             <div
-              key={idx}
+              key={item.id ?? idx}
               className="group relative aspect-[4/3] rounded-card overflow-hidden border border-[#dce2ea] bg-slate-900 cursor-pointer shadow-xs hover:border-primary/50 transition-all"
               onClick={() => {
                 if (item.type === "video") {
@@ -209,12 +99,20 @@ export default function MediaGallery({
                 }
               }}
             >
-              <Image
-                src={item.poster || item.src}
-                alt={item.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
+              {item.type === "video" && !item.poster ? (
+                <video
+                  src={item.src}
+                  muted
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <Image
+                  src={item.poster || item.src}
+                  alt={item.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
 
               {/* Type Badge */}

@@ -1,18 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LightboxModal from "@/components/LightboxModal";
 import { ScrollTimeline } from "@/components/scroll-timeline";
-import { VideoDialog } from "@/components/video-dialog";
 import Link from "next/link";
-import { Calendar } from "lucide-react";
 import { InstagramIcon } from "@/components/Icons";
-import { SITE_METADATA, UPDATES_TIMELINE } from "@/data/siteData";
+import { SITE_METADATA, UPDATES_TIMELINE, type UpdatePost } from "@/data/siteData";
 
 export default function UpdatesPage() {
   const [filter, setFilter] = useState<string>("all");
+  const [updates, setUpdates] = useState<UpdatePost[]>(UPDATES_TIMELINE);
+
+  useEffect(() => {
+    fetch("/api/updates")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { updates?: UpdatePost[] } | null) => {
+        if (data?.updates && data.updates.length > 0) {
+          setUpdates(data.updates);
+        }
+      })
+      .catch(() => {
+        // Keep static fallback cleanly
+      });
+  }, []);
+
   const [lightboxModal, setLightboxModal] = useState<{
     isOpen: boolean;
     src: string;
@@ -25,8 +38,8 @@ export default function UpdatesPage() {
 
   const filteredPosts =
     filter === "all"
-      ? UPDATES_TIMELINE
-      : UPDATES_TIMELINE.filter((p) => p.category === filter);
+      ? updates
+      : updates.filter((p) => p.category === filter);
 
   return (
     <main className="min-h-screen bg-[#f9fafb] text-ink">
@@ -62,27 +75,6 @@ export default function UpdatesPage() {
               <InstagramIcon className="w-4 h-4" />
               <span>Follow Live on Instagram (@5falls.trust)</span>
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Video Dialogs Grid (Quarry UI) */}
-      <section className="py-12 px-4 sm:px-6 bg-white border-b border-border">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-lg font-bold text-foreground mb-4">Featured Video Dispatches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <VideoDialog
-              src="/video/u-2026-10-24-tree-planting-reel.mp4"
-              thumbnail="/img/u-2026-10-24-reel.webp"
-              title="15 Dry Years to Water Again"
-              subtitle="Reel (2 min)"
-            />
-            <VideoDialog
-              src="/video/u-2026-11-05-lake-event-reel.mp4"
-              thumbnail="/img/u-2026-11-05-reel.webp"
-              title="Minister Sarathkumar Restoration Walk"
-              subtitle="Reel (1 min)"
-            />
           </div>
         </div>
       </section>

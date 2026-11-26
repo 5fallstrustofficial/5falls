@@ -9,7 +9,19 @@ export interface UpdatePost {
   images: { src: string; alt: string; caption?: string }[];
   video?: { src: string; poster?: string; caption?: string };
   instagramUrl?: string;
-  category: "event" | "news" | "work" | "celebration";
+  category: string;
+}
+
+export const DEFAULT_UPDATE_CATEGORIES: { id: string; label: string }[] = [
+  { id: "work", label: "Excavation & Engineering" },
+  { id: "event", label: "Events & Dignitaries" },
+  { id: "news", label: "News & Press" },
+  { id: "celebration", label: "Festivals & Thanks" },
+];
+
+export function getUpdateCategoryLabel(category: string): string {
+  const found = DEFAULT_UPDATE_CATEGORIES.find((c) => c.id === category);
+  return found ? found.label : category;
 }
 
 export interface WaterBody {

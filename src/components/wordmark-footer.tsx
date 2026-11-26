@@ -7,6 +7,7 @@ import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-mot
 import { Mail, ArrowUp } from "lucide-react";
 import { InstagramIcon } from "@/components/Icons";
 import { SITE_METADATA } from "@/data/siteData";
+import { WaveLines } from "@/components/wave-lines";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -43,15 +44,27 @@ export function WordmarkFooter({
     { label: t("nav.ourWork"), href: "/our-work" },
     { label: t("nav.updates"), href: "/updates" },
     { label: t("nav.gallery"), href: "/gallery" },
+    { label: isTamil ? "நிதி திரட்டல்" : "Crowdfunding", href: "/crowdfunding" },
     { label: t("nav.donate"), href: "/donate" },
     { label: t("nav.contact"), href: "/contact" },
+    { label: isTamil ? "உறுப்பினர் தளம்" : "Member Portal", href: "/dashboard" },
+    { label: isTamil ? "உள்நுழைவு / பதிவு" : "Sign In / Register", href: "/login" },
   ];
 
   const bottomBadge = tamilWord ?? (isTamil ? "நீருக்கு நன்றி 💧" : "Gratitude to Water 💧");
 
   return (
-    <footer className={cn("w-full overflow-hidden border-t border-border bg-[#354358] text-white pt-16 pb-8", className)}>
-      <div className="mx-auto max-w-6xl px-6">
+    <footer className={cn("relative w-full overflow-hidden border-t border-border bg-[#354358] text-white pt-16 pb-8", className)}>
+      <WaveLines
+        color="rgba(192, 220, 240, 0.22)"
+        accent="rgba(255, 255, 255, 0.14)"
+        lines={20}
+        amplitude={14}
+        speed={0.35}
+        interaction="lift"
+        className="!absolute inset-0 z-0 !min-h-0 !bg-transparent"
+      />
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           {/* Brand Column */}
           <div className="md:col-span-5 space-y-4">

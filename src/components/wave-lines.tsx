@@ -114,10 +114,15 @@ export function WaveLines({
 
     const move = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
-      ptr.x = e.clientX - r.left;
-      ptr.y = e.clientY - r.top;
-      ptr.on = true;
-
+      const px = e.clientX - r.left;
+      const py = e.clientY - r.top;
+      if (px >= 0 && px <= r.width && py >= 0 && py <= r.height) {
+        ptr.x = px;
+        ptr.y = py;
+        ptr.on = true;
+      } else {
+        ptr.on = false;
+      }
     };
     const leave = () => { ptr.x = ptr.y = -9999; ptr.on = false; };
     const down = (e: PointerEvent) => {
@@ -126,23 +131,24 @@ export function WaveLines({
 
     };
 
+    const target = el.parentElement ?? el;
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(el);
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
     io.observe(el);
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerleave", leave);
-    el.addEventListener("pointerdown", down);
+    target.addEventListener("pointermove", move);
+    target.addEventListener("pointerleave", leave);
+    target.addEventListener("pointerdown", down);
     if (reduced) { for (let i = 0; i < 90; i++) frame(i * 16); cancelAnimationFrame(raf); } else raf = requestAnimationFrame(frame);
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerleave", leave);
-      el.removeEventListener("pointerdown", down);
+      target.removeEventListener("pointermove", move);
+      target.removeEventListener("pointerleave", leave);
+      target.removeEventListener("pointerdown", down);
     };
   }, []);
 

@@ -4,6 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AboutSection from "@/components/AboutSection";
+import TeamSection from "@/components/TeamSection";
 import PartnersSection from "@/components/PartnersSection";
 import Link from "next/link";
 import { ArrowRight, Heart, Users, ShieldCheck } from "lucide-react";
@@ -52,6 +53,9 @@ export default function AboutPage() {
 
       {/* Full Core About Content */}
       <AboutSection showHeader={false} />
+
+      {/* Team Section */}
+      <TeamSection />
 
       {/* Partners & Civic Collaborators */}
       <PartnersSection />
